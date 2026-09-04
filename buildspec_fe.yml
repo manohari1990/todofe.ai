@@ -1,0 +1,29 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 24
+    commands:
+      - echo "change directory...."
+      - cd todofe.ai
+      - echo "removed exiting node_modules...."
+      - rm -rf node_modules package-lock.json
+      - echo "installing new dependencies...."
+      - npm install
+
+  build:
+    commands:
+      - echo "Building react app..."
+      - npm run build
+      - echo "App build completed!"
+  
+  post_build:
+    commands:
+      - echo "Invalidate Cloudfront....(Refreshing CDNs)"
+      - aws cloudfront create-invalidation --distribution-id E2QRQVQDD1TKDH --paths "/*"
+
+artifacts:
+  base-directory: todofe.ai/dist
+  files: 
+    - '**/*'
