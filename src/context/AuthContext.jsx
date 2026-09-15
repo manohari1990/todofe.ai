@@ -29,10 +29,12 @@ export function AuthProvider({children}) {
                 // setUser(resp)
             }catch(err){
                 setUser(null)
+                localStorage.removeItem(USER_STORAGE_KEY)
                 throw err
             }
         }
-        checkSession();
+        if(localStorage.getItem('user'))
+            checkSession();
     },[])
 
     const login = (userSession) =>{

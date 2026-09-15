@@ -38,8 +38,9 @@ export const handleLogout = async() =>{
 export const authenticatedFetch = async() =>{
     try{
         const response = await fetch(`${HOST_URL}/auth/refresh`,{method: 'POST', headers: HEADERS, credentials: 'include'})
-        if(response.ok)
-            return await response.json();
+        if(!response.ok)
+            await handleLogout();
+        return await response.json();
     }catch(err){
         throw err
     }
