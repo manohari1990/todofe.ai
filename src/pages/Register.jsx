@@ -90,7 +90,7 @@ function Register() {
                                 validation={{
                                     required: true,
                                     maxLength: 100,
-                                    allowSpace: false
+                                    allowSpace: true
                                 }}
                                 handleInput={(e)=>handleFormData(e)}
                             />
@@ -111,7 +111,7 @@ function Register() {
                                 validation={{
                                     required: false,
                                     maxLength: 100,
-                                    allowSpace: false
+                                    allowSpace: true
                                 }}
                                 handleInput={(e)=>handleFormData(e)}
                             />

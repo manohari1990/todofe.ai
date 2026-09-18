@@ -65,7 +65,7 @@ function TodoInput({ todoForm, handleAddTodo, handleUpdateItem, handleCancelUpda
                             className="block grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                             name='details'
                             cols={25}
-                            rows={2}
+                            rows={4}
                             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             required
                         >

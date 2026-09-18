@@ -21,7 +21,7 @@ export default function InputField({
         if(target.value.length >= validation.maxLength){
             err += `Maximum length for ${label.name} is ${validation.maxLength}.\n`
         }
-        if(/\s/.test(target.value)){
+        if(!validation.allowSpace && /\s/.test(target.value)){
             err += `${label.name} should not have spaces.\n`
         }
         setErrorText((prev) => {

@@ -26,7 +26,6 @@ export function AuthProvider({children}) {
                 if (resp && !resp.success) {
                     logout();
                 }
-                // setUser(resp)
             }catch(err){
                 setUser(null)
                 localStorage.removeItem(USER_STORAGE_KEY)

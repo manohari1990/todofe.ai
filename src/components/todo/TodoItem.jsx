@@ -1,6 +1,7 @@
 // Responsible only for displaying each item
 
 function TodoItem({ todo, handleDelete, handleEdit, handleStatus }) {
+    const details = (todo.details).replaceAll('{n}', '\n')
     return (
 
         <tr id={todo.todo_id} key={todo.todo_id} className="has-[:checked]:bg-blue-50/50 dark:has-[:checked]:bg-blue-900/10">
@@ -22,7 +23,7 @@ function TodoItem({ todo, handleDelete, handleEdit, handleStatus }) {
                 </label>
             </td>
             <td className="px-3 py-4 font-medium text-slate-900 dark:text-slate-50 whitespace-nowrap">{todo.title}</td>
-            <td className="px-3 py-4 text-slate-500 dark:text-slate-400"> {todo.details}</td>
+            <td className="px-3 py-4 text-slate-500 dark:text-slate-400 whitespace-pre-line"> {details}</td>
             <td className="px-3 py-4 text-slate-500 dark:text-slate-400">{todo.priority}</td>
             <td className="px-3 py-4 text-slate-500 dark:text-slate-400">{todo.due_date}</td>
             <td className="px-3 py-4 flex gap-3">
