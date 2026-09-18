@@ -10,11 +10,11 @@ import { RECORDS_PER_PAGE, INITIAL_TODO_FORM } from '../../utils/Constants'
 import { getAllTodos, saveTodo, updateTodo, deleteTodoByID } from '../../services/todoService'
 import ConfirmDelete from "./ConfirmDelete"
 import Spinner from "../Spinner"
+import { useDebounce } from "../../hooks/useDebounce"
 
 function TodoApp() {
 
     const [todoForm, setTodoForm] = useState(INITIAL_TODO_FORM);
-    const [loading, setLoading] = useState(false)
     const [todoItems, setTodoItems] = useState([])
     const [isUpdate, setIsUpdate] = useState(false)
     const [selectedUpdateId, setSelectedUpdateId] = useState(null)
@@ -28,7 +28,6 @@ function TodoApp() {
     const [skeletonLoading, setSkeletonLoading] = useState(false)
     
     const loadTodos = async (params) => {
-        setLoading(true)
         setSkeletonLoading(true)
         try {
             const response = await getAllTodos(params)
@@ -39,23 +38,31 @@ function TodoApp() {
         } catch (e) {
             console.error(e)
         } finally {
-            setLoading(false)
             setSkeletonLoading(false)
         }
     }
+    const searchQuery = useDebounce(search, 500)
+    useEffect(()=>{
+        setSkeletonLoading(true)
+    }, [search])
 
     useEffect(() => {
-        loadTodos(buildQueryParams(search, seletedSortOption, filter, pageNumber))
-    }, [search, seletedSortOption, filter, pageNumber])
+        loadTodos(buildQueryParams(searchQuery, seletedSortOption, filter, pageNumber))
+    }, [searchQuery, seletedSortOption, filter, pageNumber])
 
     const totalPages = (fetchedApiDetails) ? Math.ceil(parseInt(fetchedApiDetails.totalRecords) / RECORDS_PER_PAGE) : 0
     const startIndex = (pageNumber > totalPages ? (pageNumber - 1) - 1 : pageNumber - 1) * RECORDS_PER_PAGE
     const endIndex = startIndex + RECORDS_PER_PAGE
     const displayPages = buildPagination(pageNumber, totalPages)
 
+    const handleSearch = (searchTerm) => {
+        setSearch(searchTerm)
+        setPageNumber(1)
+    }
+
     const handleAddTodo = async() => {
-        setLoading(true)
-        if (todoForm.title.trim() === '') return;
+        if (todoForm.title.trim() === '' || todoForm.details.trim() === '') return;
+        setSkeletonLoading(true)
         let newTodo = {
             'title': todoForm.title,
             'details': todoForm.details,
@@ -73,12 +80,12 @@ function TodoApp() {
         } catch (e) {
             console.error(e)
         } finally {
-            setLoading(false)
+            setSkeletonLoading(false)
         }
     }
 
     const handleDelete = async() => {
-        setLoading(true)
+        setSkeletonLoading(true)
         try {
             const resposne = await deleteTodoByID(confirmDel)
             if (resposne.success) {
@@ -89,7 +96,7 @@ function TodoApp() {
         } catch (err) {
             console.error(err)
         } finally {
-            setLoading(false)
+            setSkeletonLoading(false)
             setConfirmDel(null)
         }
     }
@@ -111,7 +118,7 @@ function TodoApp() {
     }
 
     const handleStatus = async (status, id) => {
-        setLoading(true)
+        setSkeletonLoading(true)
         const updatedItem = todoItems.find((todo => todo.todo_id === id))
         try {
             const response = await updateTodo(id, { 'status': status ? 'completed' : 'pending' })
@@ -129,14 +136,14 @@ function TodoApp() {
         } catch (err) {
             console.error(err)
         } finally {
-            setLoading(false)
+            setSkeletonLoading(false)
         }
 
     }
 
     const handleUpdateItem = async () => {
         if (todoForm.title.trim() === '') return;
-        setLoading(true)
+        setSkeletonLoading(true)
         try {
             const updatedStatus = {
                 'title': todoForm.title,
@@ -152,7 +159,7 @@ function TodoApp() {
         } catch (err) {
             console.error(err)
         } finally {
-            setLoading(false)
+            setSkeletonLoading(false)
         }
         handleCancelUpdate()
     }
@@ -176,10 +183,6 @@ function TodoApp() {
         setPageNumber(1)
     }
 
-    const handleSearch = (searchTerm) => {
-        setSearch(searchTerm)
-        setPageNumber(1)
-    }
     const handleSort = (selectedOption) => {
         setSeletedSortOption(selectedOption)
         setPageNumber(1)
