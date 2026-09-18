@@ -2,6 +2,8 @@ import { useState } from "react";
 import { REGISTRATION_PAYLOAD } from '../utils/Constants'
 import { registerUser } from '../services/authService'
 import { useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
+import InputField from "../components/ui/InputField";
 
 function Register() {
     const [formData, setformData] = useState(REGISTRATION_PAYLOAD)
@@ -25,11 +27,12 @@ function Register() {
         }catch(err){
             throw err
         }finally{
-            setIsLoading(true)
+            setIsLoading(false)
         }
     }
 
     return (
+        isLoading ? <Spinner /> :
         <main
             className="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-900 dark:from-neutral-900 dark:via-neutral-700 dark:to-neutral-600">
             <div className="min-h-screen flex fle-col items-center justify-center px-4 py-8 md:p-8">
@@ -51,26 +54,86 @@ function Register() {
                         className="bg-white border border-slate-200 rounded-lg px-6 py-8 max-w-lg mx-auto w-full md:px-8 lg:max-w-md dark:bg-neutral-800 dark:border-neutral-600">
                         <h1 className="text-3xl mb-10 font-semibold text-slate-900 dark:text-slate-50">Sign Up</h1>
                         <div>
-                            <label htmlFor="username"
-                                className="mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50">Username</label>
-                            <input type="username" id="username" name="username" value={formData.username} onChange={(e)=> handleFormData(e.target)} placeholder="johndeo" required
-                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600" />
+                            
+                            <InputField
+                                label={{
+                                    name: "Username",
+                                    className: "mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50",
+                                }}
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+                                value={formData.username}
+                                placeholder="johndeo"
+                                validation={{
+                                    required: true,
+                                    maxLength: 100,
+                                    allowSpace: false
+                                }}
+                                handleInput={(e)=>handleFormData(e)}
+                            />
                         </div>
                         <div>
-                            <label htmlFor="first_name"
-                                className="mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50">First Name</label>
-                            <input type="first_name" id="first_name" name="first_name" value={formData.first_name} onChange={(e)=> handleFormData(e.target)} placeholder="John" required
-                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600" />
+                            
+                            <InputField
+                                label={{
+                                    name: "First Name",
+                                    className: "mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50",
+                                }}
+                                type="text" 
+                                id="first_name" 
+                                name="first_name" 
+                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+                                value={formData.first_name}
+                                placeholder="John"
+                                validation={{
+                                    required: true,
+                                    maxLength: 100,
+                                    allowSpace: false
+                                }}
+                                handleInput={(e)=>handleFormData(e)}
+                            />
                         </div>
                         <div>
-                            <label htmlFor="last_name"
-                                className="mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50">Last Name</label>
-                            <input type="last_name" id="last_name" name="last_name" value={formData.last_name} onChange={(e)=> handleFormData(e.target)} placeholder="Doe" required
-                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600" />
+
+                            <InputField
+                                label={{
+                                    name: "Last Name",
+                                    className: "mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50",
+                                }}
+                                type="text" 
+                                id="last_name" 
+                                name="last_name" 
+                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+                                value={formData.last_name}
+                                placeholder="Doe"
+                                validation={{
+                                    required: false,
+                                    maxLength: 100,
+                                    allowSpace: false
+                                }}
+                                handleInput={(e)=>handleFormData(e)}
+                            />
                         </div>
                         <div className="relative">
-                            <label htmlFor="password"
-                                className="mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50">Password</label>
+                            <InputField
+                                label={{
+                                    name: "Password",
+                                    className: "mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50",
+                                }}
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+                                value={formData.password}
+                                placeholder="••••••••"
+                                validation={{
+                                    required: true,
+                                    allowSpace: false
+                                }}
+                                handleInput={(e)=>handleFormData(e)}
+                            />
 
                             <button type="button" id="togglePassword" aria-label="Show password" aria-pressed="false"
                                 className="absolute top-1 right-2 p-0.5 flex cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded">
@@ -84,40 +147,51 @@ function Register() {
                                 </svg>
                             </button>
 
-                            <input type="password" id="password" name="password" value={formData.password} onChange={(e)=> handleFormData(e.target)} placeholder="••••••••" required
-                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600" />
                         </div>
 
                         <div>
-                            <label htmlFor="email"
-                                className="mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50">Email</label>
-                            <input type="email" id="email" name="email" value={formData.email} onChange={(e)=> handleFormData(e.target)} placeholder="john_deo@outlook.com" required
-                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600" />
+                            <InputField
+                                label={{
+                                    name: "Email",
+                                    className: "mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50",
+                                }}
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+                                value={formData.email}
+                                placeholder="john_deo@outlook.com"
+                                validation={{
+                                    required: true,
+                                    allowSpace: false
+                                }}
+                                handleInput={(e)=>handleFormData(e)}
+                            />
+                            
                         </div>
 
                         <div>
-                            <label htmlFor="phone"
-                                className="mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50">Phone</label>
-                            <input type="phone" id="phone" name="phone" value={formData.phone} onChange={(e)=> handleFormData(e.target)} placeholder="2266565412" required
-                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600" />
+                            <InputField
+                                label={{
+                                    name: "Phone",
+                                    className: "mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50",
+                                }}
+                                type="phone" 
+                                id="phone" 
+                                name="phone" 
+                                className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+                                value={formData.phone}
+                                placeholder="+91-XXXXXXXXXX"
+                                validation={{
+                                    required: true,
+                                    allowSpace: false
+                                }}
+                                handleInput={(e)=>handleFormData(e)}
+                            />
+                            
                         </div>
 
                         <div className="flex items-start flex-wrap gap-2">
-                            <label className="flex items-center group has-[input:checked]:text-slate-900">
-                                <input id="remember" name="remember" type="checkbox" required className="sr-only" />
-                                <span
-                                    className="flex h-4 w-4 shrink-0 items-center justify-center rounded outline-1 outline-slate-300 dark:outline-neutral-600 bg-white dark:bg-neutral-700 group-has-[input:checked]:bg-blue-600 group-has-[input:checked]:outline-blue-600 group-focus-within:outline-2 group-focus-within:outline-blue-600"
-                                    aria-hidden="true">
-                                    <svg className="size-3 text-white opacity-0 group-has-[input:checked]:opacity-100" viewBox="0 0 12 10"
-                                        fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M1 5l3 3 7-7" />
-                                    </svg>
-                                </span>
-                                <span className="ml-3 text-sm text-slate-700 dark:text-slate-300">
-                                    Remember me
-                                </span>
-                            </label>
-
                             <a href="#"
                                 className="ml-auto text-sm font-medium text-blue-700 dark:text-blue-500 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
                                 Forgot password?
@@ -126,7 +200,7 @@ function Register() {
 
                         <button type="button" onClick={submitRequest}
                             className="w-full py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                            Sign in</button>
+                            Sign up</button>
 
                         <div className="flex items-center gap-4 my-8">
                             <hr className="w-full border-slate-300 dark:border-neutral-700" />
