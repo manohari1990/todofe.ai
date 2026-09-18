@@ -8,6 +8,7 @@ import { TodoPriorityOption, TodoStatusOptions } from '../../utils/Constants'
 
 function TodoInput({ todoForm, handleAddTodo, handleUpdateItem, handleCancelUpdate, handleInputChange, isUpdate }) {
     const [enableListening, setEnableListening] = useState(false)
+    const details = (todoForm.details).replaceAll('{n}', '\n')
     const captureSpeech = (response) => {
         setEnableListening(prev => !prev)
         // if(!response.error){
@@ -61,19 +62,19 @@ function TodoInput({ todoForm, handleAddTodo, handleUpdateItem, handleCancelUpda
                     <div className="flex items-start rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 relative px-2">
                         <textarea
                             placeholder='Todo Details'
-                            value={todoForm.details}
-                            className="block grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+                            value={details}
+                            className="block grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6 whitespace-pre-line"
                             name='details'
                             cols={25}
                             rows={4}
                             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             required
                         >
-                            {todoForm.details}
+                            {details}
                         </textarea>
                         <AIInput
                             inputName="details"
-                            input={todoForm.details}
+                            input={details}
                             context={"improveTodo"}
                             onAccept={handleInputChange}
                             htmlClass='flex items-center pr-1 focus-within:relative'
