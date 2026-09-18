@@ -1,3 +1,4 @@
+import axios from 'axios';
 
 const HOST_URL = "http://localhost:5000";
 const HEADERS = { 'Content-Type': 'application/json' } 
@@ -41,6 +42,22 @@ export const authenticatedFetch = async() =>{
         if(!response.ok)
             await handleLogout();
         return await response.json();
+    }catch(err){
+        throw err
+    }
+}
+
+export const forgetPassword = async(payload) => {
+    console.log( `${HOST_URL}/auth/forgotpassword`)
+    try{
+        const instance = await axios({
+            url: `${HOST_URL}/auth/forgotpassword`,
+            method: 'post',
+            data: payload,
+            // headers: HEADERS
+        })
+        console.log(instance,"=============instance")
+        return instance
     }catch(err){
         throw err
     }

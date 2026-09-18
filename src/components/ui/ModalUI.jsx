@@ -1,18 +1,19 @@
-function ModalUI({ isOpen, setIsOpen, children }) {
+function ModalUI({ isOpen, setIsOpen, children, modalTitle='PopUp', submitText = 'Submit', onSubmit }) {
 
     return (
         <>
             <div 
                 id="default-modal" 
                 tabIndex="-1" 
-                className={`${isOpen ? '' : 'hidden'} overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-white`}
+                className={`${isOpen ? '' : 'hidden'} flex overflow-y-auto overflow-x-hidden fixed z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-slate-500/50`}
             >
                 <div className="relative p-4 w-full max-w-2xl max-h-full">
-                    <div className="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6">
-                        <div className="flex items-center justify-between border-b border-default pb-4 md:pb-5">
+                    <div className="relative shadow-sm p-4 md:p-6 bg-white rounded-2xl">
+                        <div className="flex items-center justify-between pb-4 md:pb-5">
                             <h3 className="text-lg font-medium text-heading">
-                                Terms of Service
+                                {modalTitle}
                             </h3>
+                            
                             <button 
                                 type="button" 
                                 className="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center" 
@@ -23,21 +24,25 @@ function ModalUI({ isOpen, setIsOpen, children }) {
                                 <span className="sr-only">Close modal</span>
                             </button>
                         </div>
-                        <div className="space-y-4 md:space-y-6 py-4 md:py-6">
+                        <hr className="my-2 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400"></hr>
+                        <div className="my-5 space-y-4 md:space-y-6 py-4 md:py-6">
                             {children}
                         </div>
-                        <div className="flex items-center border-t border-default space-x-4 pt-4 md:pt-5">
+                        <hr className="my-2 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400"></hr>
+                        <div className="flex justify-center space-x-4 pt-4 md:pt-5">
                             <button 
                                 data-modal-hide="default-modal" 
                                 type="button" 
-                                className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">I 
-                                accept
+                                onClick={onSubmit}
+                                className="py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                {submitText}
                             </button>
+
                             <button 
-                                data-modal-hide="default-modal" 
+                                data-modal-hide="default-modal"
                                 type="button" 
-                                className="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none" 
-                                onClick={() => setIsOpen(false)}>
+                                onClick={() => setIsOpen(false)}
+                                className="py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-gray-600 bg-gray-600 hover:bg-gray-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500">
                                 Cancel
                             </button>
                         </div>

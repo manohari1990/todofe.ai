@@ -1,9 +1,10 @@
 import { useState } from "react"
-import {userLogin} from "../services/authService"
+import {forgetPassword, userLogin} from "../services/authService"
 import { useAuth } from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import InputField from "../components/ui/InputField";
+import ModalUI from "../components/ui/ModalUI";
 
 function Login() {
     const {login} = useAuth();
@@ -11,6 +12,22 @@ function Login() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [forgotUsername, setForgotUsername] = useState('')
+    
+    const changePassword = async() => {
+        console.log(forgotUsername)
+        try{
+            const response = await forgetPassword({user: forgotUsername})
+            console.log(response,"=======response")
+        }catch(err){
+            throw err;
+        }finally{
+            setIsModalOpen(false)
+            setForgotUsername('')
+        }
+    }
+
     const submitRequest = async() => {
         setIsLoading(true)
         try{
@@ -117,7 +134,7 @@ function Login() {
                                     </span>
                                 </label>
 
-                                <a href="#"
+                                <a href="#" onClick={()=>setIsModalOpen(true)}
                                     className="ml-auto text-sm font-medium text-blue-700 dark:text-blue-500 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
                                     Forgot password?
                                 </a>
@@ -172,6 +189,32 @@ function Login() {
                     </div>
                 </div>
             </div>
+            <ModalUI 
+                isOpen={isModalOpen} 
+                setIsOpen={setIsModalOpen} 
+                modalTitle="Forgot Password"
+                submitText="Submit"
+                onSubmit={changePassword}
+            >
+                <InputField
+                    label={{
+                        name: "Username or Email",
+                        className: "mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50",
+                    }}
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+                    value={forgotUsername}
+                    placeholder="johndeo"
+                    validation={{
+                        required: true,
+                        maxLength: 100,
+                        allowSpace: false
+                    }}
+                    handleInput={(target)=>setForgotUsername(target.value)}
+                />
+            </ModalUI>
         </main>
     )
 }

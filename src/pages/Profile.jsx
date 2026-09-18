@@ -124,7 +124,7 @@ function Profile() {
                             <button onClick={editProfile}>Edit</button>
                         </div>
                     </div>
-                    <ModalUI isOpen={isOpen} setIsOpen={setIsOpen}>
+                    <ModalUI isOpen={isOpen} setIsOpen={setIsOpen} modalTitle=''>
                         <div>
                             this is test
                         </div>
